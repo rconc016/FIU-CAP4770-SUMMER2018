@@ -113,7 +113,7 @@ public class DecisionTreeServiceTest {
 
     @Test
     public void testGetMatchingTuples() {
-        assertEquals(5, decisionTreeService.getMatchingTuples(trainingTuples, Age.YOUTH.toString()).size());
+        assertEquals(5, decisionTreeService.getMatchingTuples(trainingTuples, AGE_KEY, Age.YOUTH.toString()).size());
     }
 
     private enum Age {

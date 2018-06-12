@@ -39,7 +39,7 @@ public class DecisionTreeController {
         attributes.remove(splittingAttribute);
 
         for (String value : getKnownValues(trainingTuples, splittingAttribute)) {
-            Set<DataTuple> matchingTuples = decisionTreeService.getMatchingTuples(trainingTuples, value);
+            Set<DataTuple> matchingTuples = decisionTreeService.getMatchingTuples(trainingTuples, splittingAttribute, value);
 
             Node newNode;
 

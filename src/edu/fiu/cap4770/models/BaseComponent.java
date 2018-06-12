@@ -4,7 +4,7 @@ package edu.fiu.cap4770.models;
  * Base decision tree component with a label.
  */
 public class BaseComponent {
-    public final String DEFAULT_LABEL = "unnamed";
+    public final static String DEFAULT_LABEL = "unnamed";
 
     private String label;
 

@@ -1,17 +1,20 @@
-package edu.fiu.cap4770.tests.unit;
+package edu.fiu.cap4770.tests.integration;
 
+import edu.fiu.cap4770.controllers.DecisionTreeController;
 import edu.fiu.cap4770.models.DataTuple;
+import edu.fiu.cap4770.models.Node;
 import edu.fiu.cap4770.services.DecisionTreeService;
 import edu.fiu.cap4770.services.DecisionTreeServiceInterface;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DecisionTreeServiceTest {
+import static org.junit.Assert.*;
+
+public class DecisionTreeControllerTest {
 
     private final String AGE_KEY = "age";
     private final String INCOME_KEY = "income";
@@ -19,6 +22,7 @@ public class DecisionTreeServiceTest {
     private final String CREDIT_RATING_KEY = "credit_rating";
     private final String CLASS_LABEL_KEY = "buys_computer";
 
+    private DecisionTreeController decisionTreeController;
     private DecisionTreeServiceInterface decisionTreeService;
     private Set<DataTuple> trainingTuples;
     private Set<String> candidateAttributes;
@@ -26,6 +30,8 @@ public class DecisionTreeServiceTest {
     @Before
     public void setUp() {
         decisionTreeService = new DecisionTreeService();
+
+        decisionTreeController = new DecisionTreeController(decisionTreeService);
 
         trainingTuples = new HashSet();
         trainingTuples.add(createTuple(Age.YOUTH, Income.HIGH, BoolProp.NO, CreditRating.FAIR, BoolProp.NO));
@@ -51,68 +57,10 @@ public class DecisionTreeServiceTest {
     }
 
     @Test
-    public void testAllTuplesOfSameClassShouldBeTrue() {
-        for (Map<String, String> tuple : trainingTuples) {
-            tuple.put(CLASS_LABEL_KEY, BoolProp.YES.toString());
-        }
+    public void testCreateDecisionTree() {
+        Node rootNode = decisionTreeController.createDecisionTree(trainingTuples, candidateAttributes, CLASS_LABEL_KEY);
 
-        assertTrue(decisionTreeService.allTuplesOfSameClass(trainingTuples, CLASS_LABEL_KEY));
-    }
-
-    @Test
-    public void testAllTuplesOfSameClassShouldBeFalse() {
-        assertFalse(decisionTreeService.allTuplesOfSameClass(trainingTuples, CLASS_LABEL_KEY));
-    }
-
-    @Test
-    public void testGetMajorityClassShouldBeYes() {
-        assertEquals(BoolProp.YES.toString(), decisionTreeService.getMajorityClass(trainingTuples, CLASS_LABEL_KEY));
-    }
-
-    @Test
-    public void testGetSplittingAttributeShouldBeAge() {
-        String splittingAttribute = decisionTreeService.getSplittingAttribute(trainingTuples, candidateAttributes, CLASS_LABEL_KEY);
-
-        assertNotNull(splittingAttribute);
-        assertEquals(AGE_KEY, splittingAttribute);
-    }
-
-    @Test
-    public void testGetSplittingAttributeShouldBeStudent() {
-        candidateAttributes.remove(AGE_KEY);
-
-        String splittingAttribute = decisionTreeService.getSplittingAttribute(trainingTuples, candidateAttributes, CLASS_LABEL_KEY);
-
-        assertNotNull(splittingAttribute);
-        assertEquals(STUDENT_KEY, splittingAttribute);
-    }
-
-    @Test
-    public void testGetSplittingAttributeShouldBeCreditRating() {
-        candidateAttributes.remove(AGE_KEY);
-        candidateAttributes.remove(STUDENT_KEY);
-
-        String splittingAttribute = decisionTreeService.getSplittingAttribute(trainingTuples, candidateAttributes, CLASS_LABEL_KEY);
-
-        assertNotNull(splittingAttribute);
-        assertEquals(CREDIT_RATING_KEY, splittingAttribute);
-    }
-
-    @Test
-    public void testGetSplittingAttributeShouldBeCreditIncome() {
-        candidateAttributes.remove(AGE_KEY);
-        candidateAttributes.remove(STUDENT_KEY);
-        candidateAttributes.remove(CREDIT_RATING_KEY);
-
-        String splittingAttribute = decisionTreeService.getSplittingAttribute(trainingTuples, candidateAttributes, CLASS_LABEL_KEY);
-
-        assertNotNull(splittingAttribute);
-        assertEquals(INCOME_KEY, splittingAttribute);
-    }
-
-    @Test
-    public void testGetMatchingTuples() {
-        assertEquals(5, decisionTreeService.getMatchingTuples(trainingTuples, AGE_KEY, Age.YOUTH.toString()).size());
+        assertNotNull(rootNode);
     }
 
     private enum Age {

@@ -1,13 +1,13 @@
 package edu.fiu.cap4770.tests.unit;
 
 import edu.fiu.cap4770.models.CandidateAttribute;
+import edu.fiu.cap4770.models.DataTuple;
 import edu.fiu.cap4770.services.DecisionTreeService;
 import edu.fiu.cap4770.services.DecisionTreeServiceInterface;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class DecisionTreeServiceTest {
     private final String CLASS_LABEL_KEY = "buys_computer";
 
     private DecisionTreeServiceInterface decisionTreeService;
-    private Set<Map<String, String>> trainingTuples;
+    private Set<DataTuple> trainingTuples;
     private Set<String> candidateAttributes;
 
     @Before
@@ -182,8 +182,8 @@ public class DecisionTreeServiceTest {
         }
     }
 
-    private Map<String, String> createTuple(Age age, Income income, BoolProp student, CreditRating creditRating, BoolProp buysComputer) {
-        Map<String, String> tuple = new HashMap();
+    private DataTuple createTuple(Age age, Income income, BoolProp student, CreditRating creditRating, BoolProp buysComputer) {
+        DataTuple tuple = new DataTuple();
         tuple.put(AGE_KEY, age.toString());
         tuple.put(INCOME_KEY, income.toString());
         tuple.put(STUDENT_KEY, student.toString());

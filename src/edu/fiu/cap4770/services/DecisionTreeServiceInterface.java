@@ -1,18 +1,16 @@
 package edu.fiu.cap4770.services;
 
-import edu.fiu.cap4770.models.CandidateAttribute;
+import edu.fiu.cap4770.models.DataTuple;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public interface DecisionTreeServiceInterface {
-    boolean allTuplesOfSameClass(Set<Map<String, String>> trainingTuples, String classLabelKey);
+    boolean allTuplesOfSameClass(Set<DataTuple> trainingTuples, String classLabelKey);
 
-    String getMajorityClass(Set<Map<String, String>> trainingTuples, String classLabelKey);
+    String getMajorityClass(Set<DataTuple> trainingTuples, String classLabelKey);
 
-    String getSplittingAttribute(Set<Map<String, String>> trainingTuples, Set<String> attributes, String classLabelKey);
+    String getSplittingAttribute(Set<DataTuple> trainingTuples, Set<String> attributes, String classLabelKey);
 
-    Set<Map<String, String>> getMatchingTuples(Set<Map<String, String>> trainingTuples, String attributeValue);
+    Set<DataTuple> getMatchingTuples(Set<DataTuple> trainingTuples, String attributeValue);
 }

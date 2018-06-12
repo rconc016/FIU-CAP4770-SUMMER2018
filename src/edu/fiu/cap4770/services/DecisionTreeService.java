@@ -4,11 +4,21 @@ import edu.fiu.cap4770.models.*;
 
 import java.util.*;
 
+/**
+ * Handles all the major operations when creating a decision tree.
+ */
 public class DecisionTreeService implements DecisionTreeServiceInterface {
-    public boolean allTuplesOfSameClass(Set<Map<String, String>> trainingTuples, String classLabel) {
+
+    /**
+     * Determines if the all the tuples from the given set have the same class label.
+     * @param tuples The set of tuples to check.
+     * @param classLabel The class label value to check for.
+     * @return True if all the tuples share the same class label.
+     */
+    public boolean allTuplesOfSameClass(Set<DataTuple> tuples, String classLabel) {
         String previousValue = null;
 
-        for (Map<String, String> tuple : trainingTuples) {
+        for (DataTuple tuple : tuples) {
             String currentValue = tuple.get(classLabel);
 
             if (previousValue != null && !currentValue.equals(previousValue)) {
@@ -21,7 +31,13 @@ public class DecisionTreeService implements DecisionTreeServiceInterface {
         return true;
     }
 
-    public String getMajorityClass(Set<Map<String, String>> trainingTuples, String classLabel) {
+    /**
+     * 
+     * @param trainingTuples
+     * @param classLabel
+     * @return
+     */
+    public String getMajorityClass(Set<DataTuple> trainingTuples, String classLabel) {
         Map<String, Integer> counts = new HashMap();
         String maxClassLabel = "";
         int maxCount = 0;
@@ -49,7 +65,7 @@ public class DecisionTreeService implements DecisionTreeServiceInterface {
         return maxClassLabel;
     }
 
-    public String getSplittingAttribute(Set<Map<String, String>> trainingTuples, Set<String> attributes, String classLabel) {
+    public String getSplittingAttribute(Set<DataTuple> trainingTuples, Set<String> attributes, String classLabel) {
         Map<String, Double> gains = new HashMap();
         double max = 0.0;
         String splittingAttribute = null;
@@ -68,11 +84,11 @@ public class DecisionTreeService implements DecisionTreeServiceInterface {
         return splittingAttribute;
     }
 
-    private double getAttributeGain(Set<Map<String, String>> trainingTuples, String attribute, String classLabel) {
+    private double getAttributeGain(Set<DataTuple> trainingTuples, String attribute, String classLabel) {
         return getClassLabelInfo(trainingTuples, classLabel) - getExpectedAttributeInfo(trainingTuples, attribute, classLabel);
     }
 
-    private double getExpectedAttributeInfo(Set<Map<String, String>> trainingTuples, String attribute, String classLabel) {
+    private double getExpectedAttributeInfo(Set<DataTuple> trainingTuples, String attribute, String classLabel) {
         double infoValue = 0.0;
         Map<String, Double> attributeTotals = new HashMap();
 
@@ -90,7 +106,7 @@ public class DecisionTreeService implements DecisionTreeServiceInterface {
         return infoValue;
     }
 
-    private double getClassLabelInfo(Set<Map<String, String>> trainingTuples, String classLabel) {
+    private double getClassLabelInfo(Set<DataTuple> trainingTuples, String classLabel) {
         Map<String, Double> attributeClassLabelTotals = new HashMap();
 
         for (Map<String, String> tuple : trainingTuples) {
@@ -103,7 +119,7 @@ public class DecisionTreeService implements DecisionTreeServiceInterface {
         return getInfo(attributeClassLabelTotals, trainingTuples.size());
     }
 
-    private double getAttributeInfo(Set<Map<String, String>> trainingTuples, String attributeName, String attributeValue, String classLabel) {
+    private double getAttributeInfo(Set<DataTuple> trainingTuples, String attributeName, String attributeValue, String classLabel) {
         Map<String, Double> attributeClassLabelTotals = new HashMap();
         int total = 0;
 
@@ -136,10 +152,10 @@ public class DecisionTreeService implements DecisionTreeServiceInterface {
         return attributeInfoValue;
     }
 
-    public Set<Map<String, String>> getMatchingTuples(Set<Map<String, String>> trainingTuples, String attributeValue) {
-        Set<Map<String, String>> matchingTuples = new HashSet();
+    public Set<DataTuple> getMatchingTuples(Set<DataTuple> trainingTuples, String attributeValue) {
+        Set<DataTuple> matchingTuples = new HashSet();
 
-        for (Map<String, String> tuple : trainingTuples) {
+        for (DataTuple tuple : trainingTuples) {
             for (Map.Entry<String, String> attribute : tuple.entrySet()) {
                 if (attribute.getValue().equals(attributeValue)) {
                     matchingTuples.add(tuple);

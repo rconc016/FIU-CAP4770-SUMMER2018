@@ -6,9 +6,11 @@ import edu.fiu.cap4770.services.DecisionTreeServiceInterface;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Set;
 
+/**
+ * Creates a new decision tree from a set of training tuples.
+ */
 public class DecisionTreeController {
     private DecisionTreeServiceInterface decisionTreeService;
 
@@ -20,7 +22,7 @@ public class DecisionTreeController {
         this.decisionTreeService = decisionTreeService;
     }
 
-    public Node createDecisionTree(Set<Map<String, String>> trainingTuples, Set<String> attributes, String classLabel) {
+    public Node createDecisionTree(Set<DataTuple> trainingTuples, Set<String> attributes, String classLabel) {
         InternalNode node = new InternalNode("", new LinkedList<>());
 
         if (decisionTreeService.allTuplesOfSameClass(trainingTuples, classLabel)) {
@@ -37,7 +39,7 @@ public class DecisionTreeController {
         attributes.remove(splittingAttribute);
 
         for (String value : getKnownValues(trainingTuples, splittingAttribute)) {
-            Set<Map<String, String>> matchingTuples = decisionTreeService.getMatchingTuples(trainingTuples, value);
+            Set<DataTuple> matchingTuples = decisionTreeService.getMatchingTuples(trainingTuples, value);
 
             Node newNode;
 
@@ -55,10 +57,10 @@ public class DecisionTreeController {
         return node;
     }
 
-    private Set<String> getKnownValues(Set<Map<String, String>> trainingTuples, String attributeKey) {
+    private Set<String> getKnownValues(Set<DataTuple> trainingTuples, String attributeKey) {
         Set<String> knownValues = new HashSet();
 
-        for (Map<String, String> tuple : trainingTuples) {
+        for (DataTuple tuple : trainingTuples) {
             String attributeValue = tuple.get(attributeKey);
 
             if (!knownValues.contains(attributeValue)) {

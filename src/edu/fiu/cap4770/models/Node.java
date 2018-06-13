@@ -3,7 +3,7 @@ package edu.fiu.cap4770.models;
 /**
  * Represents all types of decision tree nodes.
  */
-public interface Node {
+public interface Node extends TreeComponent {
     /**
      * The types of decision tree nodes available.
      */
@@ -17,4 +17,8 @@ public interface Node {
      * @return The type of node.
      */
     NodeType getType();
+
+    void print();
+
+    String getClassLabel(DataTuple tuple);
 }

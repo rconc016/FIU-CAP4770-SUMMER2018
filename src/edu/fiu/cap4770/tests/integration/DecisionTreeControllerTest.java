@@ -60,6 +60,8 @@ public class DecisionTreeControllerTest {
     public void testCreateDecisionTree() {
         Node rootNode = decisionTreeController.createDecisionTree(trainingTuples, candidateAttributes, CLASS_LABEL_KEY);
 
+        rootNode.print();
+
         assertNotNull(rootNode);
     }
 

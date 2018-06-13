@@ -1,6 +1,8 @@
 package edu.fiu.cap4770.models;
 
 import java.security.InvalidParameterException;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Represents a branch of a decision tree. The branch must
@@ -22,5 +24,18 @@ public class Branch extends BaseComponent {
         }
 
         this.node = node;
+    }
+
+    @Override
+    public Iterator iterator() {
+        LinkedList<TreeComponent> list = new LinkedList();
+        list.add(node);
+
+        return list.iterator();
+    }
+
+    @Override
+    public String getClassLabel(DataTuple tuple) {
+        return node.getClassLabel(tuple);
     }
 }

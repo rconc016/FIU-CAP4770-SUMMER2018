@@ -1,6 +1,8 @@
 package edu.fiu.cap4770.models;
 
+import javax.xml.crypto.Data;
 import java.security.InvalidParameterException;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,7 +15,8 @@ public class InternalNode extends BaseComponent implements Node {
     /**
      * Creates a new internal node with the given label
      * and list of branches.
-     * @param label The label to be used for this node.
+     *
+     * @param label    The label to be used for this node.
      * @param branches The list of outgoing branches to other nodes.
      */
     public InternalNode(String label, List<Branch> branches) {
@@ -28,6 +31,7 @@ public class InternalNode extends BaseComponent implements Node {
 
     /**
      * Gets the branches of this internal node.
+     *
      * @return Outgoing branches to other nodes.
      */
     public List<Branch> getBranches() {
@@ -36,12 +40,18 @@ public class InternalNode extends BaseComponent implements Node {
 
     /**
      * Sets the internal node's branches to other nodes.
+     *
      * @param branches The list of outgoing branches to other nodes.
      */
     public void setBranches(List<Branch> branches) {
         this.branches = branches;
     }
 
+    /**
+     * Adds a new branch to this node.
+     *
+     * @param branch The branch to be added.
+     */
     public void addBranch(Branch branch) {
         branches.add(branch);
     }
@@ -49,5 +59,23 @@ public class InternalNode extends BaseComponent implements Node {
     @Override
     public NodeType getType() {
         return NodeType.Internal;
+    }
+
+    @Override
+    public Iterator<? extends TreeComponent> iterator() {
+        return branches.iterator();
+    }
+
+    @Override
+    public String getClassLabel(DataTuple tuple) {
+        String value = tuple.get(getLabel());
+
+        for(Branch branch : branches) {
+            if (branch.getLabel().equals(value)) {
+                return branch.getClassLabel(tuple);
+            }
+        }
+
+        return "Not Found";
     }
 }
